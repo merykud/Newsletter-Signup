@@ -2,11 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
 const https = require("https");
+const dotenv = require("dotenv");
 
-const apiKey = "0f28b8f4415b9a46a3ed2717ccd16843-us17";
-const apiKeyAudience = "5df0a307f1";
+dotenv.config();
 
+const apiKey = process.env.API_KEY;
+const apiKeyAudience = process.env.API_KEY_AUDIENCE;
 const app = express();
+
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -37,10 +40,10 @@ app.post("/", function(req, res) {
   };
 
   const jsonData = JSON.stringify(data);
-  const url = "https://us17.api.mailchimp.com/3.0/lists/5df0a307f1";
+  const url = "https://us17.api.mailchimp.com/3.0/lists/"+apiKeyAudience;
   const options = {
     method: "POST",
-    auth: "merykud:0f28b8f4415b9a46a3ed2717ccd16843-us17"
+    auth: "merykud:"+apiKey
 
   };
   const request = https.request(url, options, function(response){
@@ -70,4 +73,5 @@ app.post("/failure", function(req,res){
 
 app.listen(3000, function() {
   console.log("Listening on port 3000");
+
 });
